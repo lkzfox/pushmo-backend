@@ -1,0 +1,195 @@
+Table user {
+  id int PK
+  name varchar
+  email varchar
+  password varchar
+}
+
+Table pacient {
+  id int PK
+  user_id int
+  name varchar
+  born_at date
+  address varchar
+  cpf varchar
+}
+
+Ref {
+  pacient.user_id > user.id
+}
+
+Table background {
+  id int PK
+  user_id int
+  pacient_id int
+  current_medical_care boolean
+  current_medical_care_obs varchar
+  allergic boolean
+  allergic_obs varchar
+  pacemaker boolean
+  cardiac_change boolean
+  cardiac_change_obs varchar
+  arterial_change boolean
+  arterial_change_obs varchar
+  circulatory_disturbance boolean
+  circulatory_disturbance_obs varchar
+  kidney_distrubance boolean
+  kidney_distrubance_obs varchar
+  hormony_disturbance boolean
+  hormony_disturbance_obs varchar
+  gastrointestinal_disturbance boolean
+  gastrointestinal_disturbance_obs varchar
+  convulsion boolean
+  convulsion_obs varchar
+  psychological_changes boolean
+  psychological_changes_obs varchar
+  stress boolean
+  stress_obs varchar
+  oncological_background boolean
+  oncological_background_obs varchar
+  diabetes boolean
+  diabetes_obs varchar
+  disease boolean
+  disease_obs varchar
+}
+
+Ref {
+  background.pacient_id > pacient.id
+}
+
+Ref {
+  background.user_id > user.id
+}
+
+Table pressure_ulcer_location {
+  id int PK
+  initials varchar
+  description varchar
+}
+
+Table pressure_ulcer_stage {
+  id int PK
+  initials varchar
+  description varchar
+}
+
+Table pressure_ulcer {
+  id int PK
+  user_id int
+  pacient_id int
+  image_path varchar
+  pressure_ulcer_location_id int
+  pressure_ulcer_location_obs varchar
+  pressure_ulcer_stage_id int
+  created_at date
+}
+
+Ref {
+  pressure_ulcer.pacient_id > pacient.id
+}
+
+Ref {
+  pressure_ulcer.pressure_ulcer_location_id > pressure_ulcer_location.id
+}
+
+Ref {
+  pressure_ulcer.pressure_ulcer_stage_id > pressure_ulcer_stage.id
+}
+
+Ref {
+  pressure_ulcer.user_id > user.id
+}
+
+Table area {
+  id int PK
+  min decimal
+  max decimal
+  value int 
+}
+
+Table exudato {
+  id int PK
+  description varchar
+  value int
+}
+
+Table skin {
+  id int PK
+  description varchar
+  value int
+}
+
+Table push_entry {
+  id int PK
+  user_id int
+  length decimal
+  width decimal
+  exudato_id int
+  skin_id int
+  area_id int
+  pressure_ulcer_id int
+  created_at date
+  image_path varchar
+}
+
+Ref {
+  push_entry.exudato_id > exudato.id
+}
+
+Ref {
+  push_entry.skin_id > skin.id
+}
+
+Ref {
+  push_entry.area_id > area.id
+}
+
+Ref {
+  push_entry.pressure_ulcer_id > pressure_ulcer.id
+}
+
+Ref {
+  push_entry.user_id > user.id
+}
+
+Table feature{
+  id int PK
+  description varchar
+}
+
+Table option {
+  id int PK
+  description varchar
+  feature_id int
+}
+
+Ref {
+  option.feature_id > feature.id
+}
+
+Table option_push {
+  id int PK
+  push_entry_id int
+  option_id int
+  value boolean
+}
+
+Ref {
+  option_push.push_entry_id > push_entry.id
+}
+
+Ref {
+  option_push.option_id > option.id
+}
+
+Table additional_info {
+  id int PK
+  push_entry_id int
+  used_bandage varchar
+  change_ratio varchar
+  others varchar
+}
+
+Ref {
+  additional_info.push_entry_id > push_entry.id
+}
