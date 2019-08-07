@@ -10,7 +10,8 @@ CREATE TABLE pushmo.pacient (
     user_id INT REFERENCES pushmo.users(id),
     name VARCHAR(50),
     born_at DATE,
-    cpf VARCHAR(11)
+    cpf VARCHAR(11),
+    address VARCHAR(255)
 );
 
 CREATE TABLE pushmo.background (

@@ -11,7 +11,7 @@ module.exports = {
         .authenticate()
         .then(() => {
             console.log('Connection has been established successfully.');
-            //sequelize.sync();
+            //sequelize.sync({force: true});
         })
         .catch(err => {
             console.error('Unable to connect to the database:', err);
