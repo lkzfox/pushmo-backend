@@ -6,7 +6,17 @@
   "directories": {
     "doc": "docs"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@hapi/joi": "^15.1.0",
+    "bcrypt": "^3.0.6",
+    "config": "^3.2.2",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "pg": "^7.12.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.12.3"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
