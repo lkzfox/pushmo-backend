@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User, Pacient } = require('../models')
+const { User } = require('../models')
 const _ = require('lodash');
 
 router.get('/me', async (req, res) => {

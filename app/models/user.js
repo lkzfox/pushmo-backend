@@ -8,7 +8,7 @@ module.exports = (sequelize, Types) => {
     class User extends Types.Model {
         constructor(...params) {
             super(...params);
-            this.schema = Joi.object().keys({
+            this.schema = Joi.object().options({ abortEarly: false }).keys({
                 id: Joi.any().allow(Number, null),
                 name: Joi.string().min(3).max(50).required(),
                 email: Joi.string().email().max(50).required(),
@@ -21,12 +21,13 @@ module.exports = (sequelize, Types) => {
         validate() {
             const result = Joi.validate(this.dataValues, this.schema);            
             return {
-                sucess:  result.error === null,
+                success:  result.error === null,
                 result
             } 
         }
-        static associate({ User, Pacient }) {
+        static associate({ User, Pacient, Background }) {
             User.hasMany(Pacient);
+            User.hasMany(Background);
         }
     }
     User.init({

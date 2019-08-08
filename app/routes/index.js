@@ -2,8 +2,6 @@ const express = require('express');
 const fs        = require('fs');
 const path      = require('path');
 const ignored   = [path.basename(__filename)];
-const db        = {};
-const { Sequelize, sequelize } = require('../db/connection');
 
 
 module.exports = function (app) {

@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const Joi = require('@hapi/joi');
 
 module.exports = (sequelize, Types) => {
@@ -6,24 +5,25 @@ module.exports = (sequelize, Types) => {
     class Pacient extends Types.Model {
         constructor(...params) {
             super(...params);
-            this.schema = Joi.object().keys({
+            this.schema = Joi.object().options({ abortEarly: false }).keys({
                 id: Joi.any().allow(Number, null),
                 user_id: Joi.any().allow(Number, null),
                 name: Joi.string().min(3).max(50).required(),
                 born_at: Joi.date().min('01-01-1920').required(),
                 cpf: Joi.string().min(11).max(11).required(),
-                address: Joi.string().min(6)
+                address: Joi.string().min(6).allow('')
             }) 
         }
         validate() {
             const result = Joi.validate(this.dataValues, this.schema);
             return {
-                sucess:  result.error === null,
+                success:  result.error === null,
                 result
             } 
         }
-        static associate({ Pacient, User }) {
+        static associate({ Pacient, User, Background }) {
             Pacient.belongsTo(User);
+            Pacient.hasOne(Background)
         }
     }
     Pacient.init({

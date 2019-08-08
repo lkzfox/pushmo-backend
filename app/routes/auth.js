@@ -31,20 +31,28 @@ router.post('/register', async (req, res) => {
     
     user = new db.User(req.body);
     
-    const { sucess, result } = user.validate(); 
+    const { success, result } = user.validate(); 
     
-    if (!sucess) return res.status(400).send({
-        sucess,
+    if (!success) return res.status(400).send({
+        success,
         errors: result.error.details,
         message: "Invalid fields"
     })
 
-    await user.save();
-    
-    res.send({
-        success: true,
-        message: "User registered."
-    });
+    try{        
+        await user.save();
+        
+        res.send({
+            success: true,
+            message: "User registered."
+        });
+    } catch (err) {
+        res.status(400).send({
+            success: false,
+            message: "User registration failed.",
+            error: err.parent.detail
+        });
+    }
 })
 
 module.exports = router;
