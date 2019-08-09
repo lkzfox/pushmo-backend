@@ -74,8 +74,8 @@ CREATE TABLE pushmo.pressure_ulcer (
 
 CREATE TABLE pushmo.area (
   id SERIAL NOT NULL UNIQUE,
-  min DECIMAL(2,1),
-  max DECIMAL(2,1),
+  min DECIMAL(4,2),
+  max DECIMAL(4,2),
   value INT 
 );
 
@@ -94,8 +94,8 @@ CREATE TABLE pushmo.skin (
 CREATE TABLE pushmo.push_entry (
   id SERIAL NOT NULL UNIQUE,
   user_id INT REFERENCES pushmo.users(id),
-  length DECIMAL(2,1),
-  width DECIMAL(2,1),
+  length DECIMAL(4,2),
+  width DECIMAL(4,2),
   exudato_id INT REFERENCES pushmo.exudato(id),
   skin_id INT REFERENCES pushmo.skin(id),
   area_id INT REFERENCES pushmo.area(id),
