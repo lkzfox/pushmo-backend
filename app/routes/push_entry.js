@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User, PushEntry, Area, Exudato, Skin } = require('../models');
+const { User, PushEntry, Area, Exudato, Skin, AdditionalInfo, OptionPush, Option, Feature } = require('../models');
 const { Sequelize } = require('../db/connection');
 const Op = Sequelize.Op;
 
@@ -11,7 +11,14 @@ router.get('/pressure_ulcer/:id/entries', async (req, res) => {
         include: [{ 
             model: User,
             attributes: ['name', 'email'] 
-        }, Area, Exudato, Skin ]
+        }, Area, Exudato, Skin, AdditionalInfo, 
+        {
+            model: OptionPush,
+            include: [{
+                model: Option,
+                include: [ Feature ]
+            }]
+        }]
     });
 
     res.status(200).send(push_entries || []);
@@ -55,10 +62,14 @@ router.post('/pressure_ulcer/:id/entries', async (req, res) => {
     
     try{
         await push_entry.save();
+        const features = await Feature.findAll({
+            include: [ Option ]
+        });
         res.send({
             success: true,
             message: "PushEntry registered.",
-            data: push_entry
+            data: push_entry,
+            features
         });
     } catch (err) {
         res.status(400).send({

@@ -120,12 +120,13 @@ CREATE TABLE pushmo.option_push (
   id SERIAL NOT NULL UNIQUE,
   push_entry_id INT REFERENCES pushmo.push_entry(id),
   option_id INT REFERENCES pushmo.option(id),
-  value boolean
+  value boolean,
+  UNIQUE (push_entry_id, option_id)
 );
 
 CREATE TABLE pushmo.additional_info (
   id SERIAL NOT NULL UNIQUE,
-  push_entry_id INT REFERENCES pushmo.push_entry(id),
+  push_entry_id INT UNIQUE REFERENCES pushmo.push_entry(id),
   used_bandage VARCHAR,
   change_ratio VARCHAR,
   others VARCHAR

@@ -25,12 +25,14 @@ module.exports = (sequelize, Types) => {
                 result
             } 
         }
-        static associate({ PressureUlcer, PushEntry, Area, Exudato, Skin, User }) {
+        static associate({ PressureUlcer, PushEntry, Area, Exudato, Skin, User, AdditionalInfo, OptionPush }) {
             PushEntry.belongsTo(User);
             PushEntry.belongsTo(PressureUlcer);
             PushEntry.belongsTo(Area);
             PushEntry.belongsTo(Skin);
             PushEntry.belongsTo(Exudato);
+            PushEntry.hasOne(AdditionalInfo);
+            PushEntry.hasMany(OptionPush);
         }
     }
     PushEntry.init({
