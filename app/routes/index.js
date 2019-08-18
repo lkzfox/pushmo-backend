@@ -1,12 +1,17 @@
-const express = require('express');
+const express   = require('express');
 const fs        = require('fs');
 const path      = require('path');
 const ignored   = [path.basename(__filename)];
+const cors      = require('cors');
 
 
 module.exports = function (app) {
     ignored.push("auth.js");
     app.use(express.json());
+    app.use(cors({
+        origin: true,
+        credentials: true
+    }));
     app.use('/api/auth/', require('./auth'));
     app.use(require('../middleware/auth'));
 

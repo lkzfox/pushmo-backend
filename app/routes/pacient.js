@@ -1,10 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const { Pacient, User } = require('../models');
+const { Sequelize } = require('../db/connection');
+const Op = Sequelize.Op;
 
 router.get('/pacients', async (req, res) => {
+    const { name, cpf } = req.query;
+    const where = {};
 
+    if (name) {
+        where.name = {
+            [Op.iLike]: '%' + name + '%'
+        }
+    }
+
+    if (cpf) {
+        where.cpf = {
+            [Op.iLike]: cpf + '%'
+        }
+    }
+    
     const pacients = await Pacient.findAll({
+        where,
         include: [{ 
             model: User,
             attributes: ['name', 'email'] 
