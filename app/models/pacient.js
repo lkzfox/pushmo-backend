@@ -11,7 +11,7 @@ module.exports = (sequelize, Types) => {
                 name: Joi.string().min(3).max(50).required(),
                 born_at: Joi.date().min('01-01-1920').required(),
                 cpf: Joi.string().min(11).max(11).required(),
-                address: Joi.string().min(6).allow('')
+                address: Joi.string().allow('')
             }) 
         }
         validate() {

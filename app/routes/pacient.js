@@ -5,20 +5,30 @@ const { Sequelize } = require('../db/connection');
 const Op = Sequelize.Op;
 
 router.get('/pacients', async (req, res) => {
-    const { name, cpf } = req.query;
-    const where = {};
+    let { name, cpf } = req.query;
+    name = name.trim();
+    cpf = cpf.trim();
+    let where = {
+        [Op.or]: []
+    };
 
     if (name) {
-        where.name = {
-            [Op.iLike]: '%' + name + '%'
-        }
+        where[Op.or].push({
+            name: {
+                [Op.iLike]: '%' + name + '%'
+            }
+        })
     }
 
     if (cpf) {
-        where.cpf = {
-            [Op.iLike]: cpf + '%'
-        }
+        where[Op.or].push({
+            cpf: {
+                [Op.iLike]: cpf + '%'
+            }
+        })
     }
+
+    if (!name && !cpf) where = {};
     
     const pacients = await Pacient.findAll({
         where,
@@ -28,7 +38,8 @@ router.get('/pacients', async (req, res) => {
         }],
         order: [
             ['name', 'ASC']
-        ]
+        ],
+        limit: 30
     });
 
     res.status(200).send(pacients);
@@ -48,7 +59,8 @@ router.post('/pacients', async (req, res) => {
     var pacient = await Pacient.findOne({ where: { cpf } });    
     if (pacient) return res.status(400).send({
         success: false,  
-        message: "Pacient already registered."
+        message: "CPF already registered.",
+        errorCode: 'CPF_IN_USE'
     });
     req.body.user_id = req._user.id;
     pacient = new Pacient(req.body);
