@@ -11,8 +11,13 @@ router.get('/pacient/:id/background', async (req, res) => {
             attributes: ['name', 'email'] 
         }]
     });
+    
+    if (!background) return res.status(400).send({
+        success: false,
+        message: "No background registered"
+    })
 
-    res.status(200).send(background || {});
+    res.status(200).send(background);
 })
 
 router.post('/pacient/:id/background', async (req, res) => {
