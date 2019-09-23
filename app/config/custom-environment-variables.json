@@ -1,0 +1,6 @@
+{
+    "database": {
+        "host": "PUSHMO_DB_HOST",
+        "password": "PUSHMO_DB_PASSWORD"
+    }
+}

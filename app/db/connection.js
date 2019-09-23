@@ -1,6 +1,11 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('postgres://postgres:postgres@localhost:5432/pushmo');
+const config = require('config');
+const dbString = 'postgres://postgres:postgres@localhost:5432/pushmo';
 
+if (config.has('NODE_ENV') && config.get('NODE_ENV'))
+    dbString = `postgres://${config.get("database.host")}:${config.get("database.password")}@localhost:5432/pushmo`;
+
+const sequelize = new Sequelize(dbString);
 
 module.exports = {
     Sequelize, 
