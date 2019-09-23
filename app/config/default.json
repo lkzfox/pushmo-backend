@@ -1,3 +1,4 @@
 {
-    "name": "PUSHMO"
+    "name": "PUSHMO",
+    "jwtKey": "PuShMoApP"
 }

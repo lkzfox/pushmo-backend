@@ -5,7 +5,7 @@ const { Sequelize } = require('../db/connection');
 const Op = Sequelize.Op;
 
 router.get('/pacients', async (req, res) => {
-    let { name, cpf } = req.query;
+    let { name = '', cpf = '' } = req.query;
     name = name.trim();
     cpf = cpf.trim();
     let where = {
