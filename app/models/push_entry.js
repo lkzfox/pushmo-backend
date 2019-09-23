@@ -34,6 +34,29 @@ module.exports = (sequelize, Types) => {
             PushEntry.hasOne(AdditionalInfo);
             PushEntry.hasMany(OptionPush);
         }
+
+        static modelDataForChart(data) {
+            const set = new Set();
+            const entries = data.map(({ pressure_ulcer_id, created_at, Area, Exudato, Skin }) => {
+                set.add(pressure_ulcer_id);
+                return {
+                    pressure_ulcer_id,
+                    created_at,
+                    value: Area.value + Exudato.value + Skin.value
+                }
+            })
+
+            const results = [];
+            set.forEach(pressure_ulcer => {
+                results.push({
+                    pressure_ulcer_id: pressure_ulcer,
+                    data: entries.filter(element => element.pressure_ulcer_id === pressure_ulcer).map(element => element.value),
+                    labels: entries.filter(element => element.pressure_ulcer_id === pressure_ulcer).map(element => element.created_at),
+                })
+            })
+
+            return results;
+        }
     }
     PushEntry.init({
         user_id: {

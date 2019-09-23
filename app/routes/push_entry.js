@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { User, PushEntry, Area, Exudato, Skin, AdditionalInfo, OptionPush, Option, Feature } = require('../models');
+const { User, PushEntry, Area, Exudato, Skin, AdditionalInfo, OptionPush, Option, Feature, Pacient, PressureUlcer } = require('../models');
 const { Sequelize } = require('../db/connection');
+const DateModifier = require('../helpers/dateModifier');
+const saveImage = require('../helpers/saveImage');
 const Op = Sequelize.Op;
+const path = require('path');
 
 router.get('/pressure_ulcer/:id/entries', async (req, res) => {
 
@@ -22,6 +25,52 @@ router.get('/pressure_ulcer/:id/entries', async (req, res) => {
     });
 
     res.status(200).send(push_entries || []);
+})
+
+router.get('/pressure_ulcer/image/:image', async (req, res) => {    
+    if (!req.params.image)
+        return res.send(404);
+
+    const file = path.join(__dirname, '..', 'images/', req.params.image);
+    return res.sendFile(file);
+
+})
+
+
+router.post('/pressure_ulcer/pacient/:id/entries', async (req, res) => {
+    
+    const begin = DateModifier.utcDate(req.body.begin);
+    const end = DateModifier.utcDate(req.body.end);
+
+    console.log(begin, end);
+    
+    
+    const push_entries = await PushEntry.findAll({
+        where: {
+            created_at: {
+                [Op.and]: {
+                    [Op.gte]: begin,
+                    [Op.lte]: end
+                }
+            },
+        },
+        include: [ Area, Exudato, Skin, 
+            {
+                model: PressureUlcer,
+                required: true,
+                include: [
+                    {
+                        model: Pacient,
+                        required: true,
+                        where: { id: req.params.id }
+                    }
+                ]
+            }
+        ],
+        order: [[PressureUlcer, 'id'], 'created_at']
+    });
+
+    res.status(200).send(PushEntry.modelDataForChart(push_entries) || []);
 })
 
 router.post('/pressure_ulcer/:id/entries', async (req, res) => {
@@ -45,7 +94,7 @@ router.post('/pressure_ulcer/:id/entries', async (req, res) => {
             },
             max: {
                 [Op.gte]: square_area
-            }
+            } 
         }
     })
 
@@ -60,8 +109,19 @@ router.post('/pressure_ulcer/:id/entries', async (req, res) => {
 
     const push_entry = await new PushEntry(req.body);
     
-    try{
+    try{        
+		if (req.body.image) {	
+			const imageInfo = saveImage(req.body.image, [req.params.id])
+			push_entry.image_path = imageInfo.fileName;
+        }
+        
         await push_entry.save();
+        await push_entry.reload({
+            include: [{ 
+                model: User,
+                attributes: ['name', 'email'] 
+            }, Area, Exudato, Skin, AdditionalInfo,]
+        })
         const features = await Feature.findAll({
             include: [ Option ]
         });
@@ -75,7 +135,7 @@ router.post('/pressure_ulcer/:id/entries', async (req, res) => {
         res.status(400).send({
             success: false,
             message: "PushEntry registration failed.",
-            errors: [{message: err.parent.detail}]
+            errors: [{message: err}]
         });
     }
     

@@ -9,7 +9,7 @@ module.exports = (sequelize, Types) => {
                 id: Joi.any().allow(Number, null),
                 push_entry_id: Joi.any().allow(Number, null),
                 option_id: Joi.any().allow(Number, null),
-                value: Joi.boolean().required()
+                value: Joi.boolean()
             }) 
         }
         validate() {

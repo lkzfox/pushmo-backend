@@ -1,8 +1,7 @@
 const express = require('express');
-const base64ToImage = require('base64-to-image');
-const path = require('path');
 const router = express.Router();
-const { User, PressureUlcer, PressureUlcerLocation, PressureUlcerStage } = require('../models');
+const { User, PressureUlcer, PressureUlcerLocation, PressureUlcerStage, Exudato, Skin } = require('../models');
+const saveImage = require('../helpers/saveImage');
 
 router.get('/pacient/:id/pressure_ulcers', async (req, res) => {
 
@@ -40,16 +39,10 @@ router.post('/pacient/:id/pressure_ulcers', async (req, res) => {
     pressure_ulcer = await new PressureUlcer(req.body);
     
     try{
-		if (req.body.image) {
-			const base64Str = req.body.image;
-			const filePath = path.join(__dirname, '..', 'images/');
-			const fileName = `${(new Date()).getTime()}-${req.params.id}`;
-			const optionalObj = { fileName, type: 'jpeg' };
-	
-			const imageInfo = base64ToImage(base64Str,filePath,optionalObj);
+		if (req.body.image) {	
+			const imageInfo = saveImage(req.body.image, [req.params.id])
 			pressure_ulcer.image_path = imageInfo.fileName;
 		}
-
 	
         await pressure_ulcer.save();
         const loaded = await PressureUlcer.findOne({
@@ -80,10 +73,14 @@ router.get('/pressure_ulcers/info', async (req, res) => {
 
     const locations = await PressureUlcerLocation.findAll();
     const stages = await PressureUlcerStage.findAll();
+    const exudatos = await Exudato.findAll();
+    const skins = await Skin.findAll();
 
     res.status(200).send({
         locations,
-        stages
+        stages,
+        exudatos, 
+        skins
     });
 })
 

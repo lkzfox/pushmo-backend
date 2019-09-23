@@ -12,6 +12,7 @@ module.exports = function (app) {
         origin: true,
         credentials: true
     }));
+    app.use(express.static('../images'));
     app.use('/api/auth/', require('./auth'));
     app.use(require('../middleware/auth'));
 
