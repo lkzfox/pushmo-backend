@@ -30,7 +30,9 @@ router.get('/pressure_ulcer/:id/entries', async (req, res) => {
 router.get('/pressure_ulcer/image/:image', async (req, res) => {    
     if (!req.params.image)
         return res.send(404);
-
+    
+    console.log(__dirname, path.join(__dirname, '..', 'images/') );
+    
     const file = path.join(__dirname, '..', 'images/', req.params.image);
     return res.sendFile(file);
 
