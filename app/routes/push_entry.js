@@ -6,6 +6,7 @@ const DateModifier = require('../helpers/dateModifier');
 const saveImage = require('../helpers/saveImage');
 const Op = Sequelize.Op;
 const path = require('path');
+const fs        = require('fs');
 
 router.get('/pressure_ulcer/:id/entries', async (req, res) => {
 
