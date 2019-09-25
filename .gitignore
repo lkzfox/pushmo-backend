@@ -1,3 +1,4 @@
 node_modules
 app/images/*
+!app/images/.gitkeep
 .vscode
