@@ -4,6 +4,7 @@ const { connect } = require('./db/connection');
 
 
 const app = express();
+console.log("connecting to database...");
 connect();
 
 require('./routes')(app);
