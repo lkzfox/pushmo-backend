@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const config = require('config');
-var dbString = 'postgres://postgres:postgres@localhost:5432/pushmo';
+var dbString = 'postgres://pushmo:P@s577orDs@pushmo.postgres.uhserver.com:5432/pushmo';
 
 if (config.has('NODE_ENV') && config.get('NODE_ENV') == 'production'){
     dbString = `postgres://pushmo:${config.get("database.password")}@${config.get("database.host")}:5432/pushmo`;
