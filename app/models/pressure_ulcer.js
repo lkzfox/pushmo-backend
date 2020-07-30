@@ -10,9 +10,10 @@ module.exports = (sequelize, Types) => {
                 user_id: Joi.number().integer().required(),
                 pacient_id: Joi.number().integer().required(),
                 image_path: Joi.string().max(255).allow(null),
-                pressure_ulcer_location_id: Joi.number().integer().required(),
-                pressure_ulcer_location_obs: Joi.string().max(255).allow(null),
-                pressure_ulcer_stage_id: Joi.number().integer().required(),
+                pressure_ulcer_location_id: Joi.number().integer().allow(null),
+                pressure_ulcer_location_desc: Joi.string().max(255).allow(null),
+                pressure_ulcer_stage_id: Joi.number().integer().allow(null),
+                pressure_ulcer_stage_desc: Joi.string().max(255).allow(null),
                 created_at: Joi.date().required()
             }) 
         }
@@ -42,14 +43,17 @@ module.exports = (sequelize, Types) => {
         },
         pressure_ulcer_location_id: {
             type: Types.INTEGER,
-            allowNull: false
+            allowNull: true
         },
-        pressure_ulcer_location_obs: {
+        pressure_ulcer_location_desc: {
             type: Types.STRING
         },
         pressure_ulcer_stage_id: {
             type: Types.INTEGER,
-            allowNull: false
+            allowNull: true
+        },
+        pressure_ulcer_stage_desc: {
+            type: Types.STRING
         },
         created_at: {
             type: Types.DATE,

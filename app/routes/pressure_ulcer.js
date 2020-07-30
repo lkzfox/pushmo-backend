@@ -10,7 +10,8 @@ router.get('/pacient/:id/pressure_ulcers', async (req, res) => {
         include: [{ 
             model: User,
             attributes: ['name', 'email'] 
-        }, PressureUlcerLocation, PressureUlcerStage ]
+        }, PressureUlcerLocation, PressureUlcerStage ],
+        order: ['id']
     });
 
     res.status(200).send(pressure_ulcer || {});

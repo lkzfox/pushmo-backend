@@ -1,3 +1,4 @@
 {
-    "jwtKey": "PuShMoApP"
+    "jwtKey": "PuShMoApP",
+    "NODE_ENV": "NODE_ENV"
 }
