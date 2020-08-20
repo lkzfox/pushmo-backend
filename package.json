@@ -9,7 +9,7 @@
   "dependencies": {
     "@hapi/joi": "^15.1.0",
     "base64-to-image": "^1.0.2",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "config": "^3.2.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
