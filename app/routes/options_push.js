@@ -20,7 +20,8 @@ router.get('/pressure_ulcer/entry/:id/feature/:feature_id', async (req, res) => 
 
 router.get('/pressure_ulcer/entry/features', async (req, res) => {
     const features = await Feature.findAll({
-        include: [Option]
+        include: [Option],
+        order: [['id', 'asc']]
     });
 
     res.status(200).send(features || {});

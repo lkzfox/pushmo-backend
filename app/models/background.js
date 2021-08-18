@@ -37,7 +37,9 @@ module.exports = (sequelize, Types) => {
                 diabetes: Joi.boolean().required(),
                 diabetes_obs: Joi.string().max(255).allow(null),
                 disease: Joi.boolean().required(),
-                disease_obs: Joi.string().max(255).allow(null)
+                disease_obs: Joi.string().max(255).allow(null),
+                smoker: Joi.boolean().required(),
+                drinker: Joi.boolean().required()
             }) 
         }
         validate() {
@@ -162,7 +164,15 @@ module.exports = (sequelize, Types) => {
         },
         disease_obs: {
             type: Types.STRING
-        }
+        },
+        smoker: {
+            type: Types.BOOLEAN,
+            allowNull: false
+        },
+        drinker: {
+            type: Types.BOOLEAN,
+            allowNull: false
+        },
     }, {
         timestamps: false,
         schema: 'pushmo',
