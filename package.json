@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@hapi/joi": "^15.1.0",
+    "@hapi/joi": "^15.1.1",
     "base64-to-image": "^1.0.2",
     "bcrypt": "^3.0.6",
     "config": "^3.2.2",
